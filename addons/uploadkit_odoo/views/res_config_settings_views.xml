@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_uploadkit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.uploadkit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="UploadKit" name="uploadkit_odoo">
+                    <block title="UploadKit">
+                        <setting string="Storage provider factory"
+                                 help="Dotted path to a callable that returns a StorageProvider.">
+                            <field name="uploadkit_storage_provider" placeholder="my_module.storage.get_provider"/>
+                        </setting>
+                        <setting string="Upload bucket"
+                                 help="Bucket or container name for StorageProvider.put.">
+                            <field name="uploadkit_bucket" placeholder="uploads"/>
+                        </setting>
+                        <setting string="Object name prefix"
+                                 help="Optional prefix prepended to object names.">
+                            <field name="uploadkit_object_prefix" placeholder="uploads/"/>
+                        </setting>
+                        <setting string="Max upload size (bytes)"
+                                 help="Default UploadPolicy max_size.">
+                            <field name="uploadkit_max_size"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
