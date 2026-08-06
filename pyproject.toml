@@ -45,4 +45,4 @@ packages = ["src/uploadkit_odoo"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = [".", "src"]

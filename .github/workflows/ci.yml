@@ -56,4 +56,6 @@ jobs:
         working-directory: uploadkit-odoo
         run: |
           coverage run -m pytest -q
-          coverage report -m --include='src/*' --fail-under=100
+          coverage report -m \
+            --include='src/*,addons/uploadkit_odoo/models/uploadkit_service.py,addons/uploadkit_odoo/models/res_config_settings.py,addons/uploadkit_odoo/controllers/upload.py' \
+            --fail-under=100
