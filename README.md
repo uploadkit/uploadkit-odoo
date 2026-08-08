@@ -60,6 +60,10 @@ from uploadkit_odoo import as_uploadable, json_error_response
 from uploadkit_security import default_validators
 
 
+def notify(result):
+    ...
+
+
 class MyController(http.Controller):
     @http.route("/my/upload", type="http", auth="user", methods=["POST"], csrf=True)
     def upload(self, **kw):
@@ -76,11 +80,16 @@ class MyController(http.Controller):
                 as_uploadable(uploaded),
                 bucket="uploads",
                 object_name=uploaded.filename,
+                after_upload=notify,  # or a Celery-like task with .delay
             )
         except UploaderError as exc:
             return json_error_response(exc)
         return request.make_json_response(result.as_task_kwargs())
 ```
+
+## After-upload
+
+Library controllers can pass Core `after_upload` on `Uploader.upload` (sync callback or Celery-like `.delay`). The optional addon `uploadkit.service.upload()` returns `UploadResult.as_task_kwargs()` and does **not** accept a hook — call Core `Uploader` directly (as above), or enqueue work from the returned dict. Full semantics: [uploadkit Core README](https://github.com/uploadkit/uploadkit#after-upload-hooks).
 
 ## Storage provider (AWS S3 or MinIO)
 
@@ -147,7 +156,8 @@ def get_provider():
 
 ```python
 result = env["uploadkit.service"].upload(file_storage, object_name="docs/a.pdf")
-# result is UploadResult.as_task_kwargs()
+# result is UploadResult.as_task_kwargs() — no after_upload parameter
+# Enqueue from the dict, or call Uploader.upload(..., after_upload=...) yourself
 ```
 
 ### HTTP route
