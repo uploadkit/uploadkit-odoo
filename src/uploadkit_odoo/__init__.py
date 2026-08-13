@@ -20,4 +20,4 @@ __all__ = [
     "json_error_response",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
